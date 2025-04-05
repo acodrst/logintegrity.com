@@ -1,0 +1,20 @@
+\documentclass[preview]{standalone}
+\usepackage{tikz}
+\begin{document}
+\usetikzlibrary{quotes}
+\usetikzlibrary{shapes}
+\usetikzlibrary {arrows.meta} 
+\usetikzlibrary{graphdrawing}
+\usetikzlibrary{graphs}
+\usegdlibrary{trees}
+\usegdlibrary{circular}
+\usegdlibrary{force} 
+\tikzstyle{arrow}=[line width=1pt, ->, >=latex ]
+\tikzstyle{vertex}=[draw,circle,minimum size=14pt]
+\begin{tikzpicture}[simple necklace layout,transform canvas={scale=.4,rotate=-60,xshift=-22pt,yshift=2pt}]
+\node(1)[vertex,orange,fill=orange]{};
+\node(0)[vertex,teal,fill=teal]{};
+\node(2)[vertex,magenta,fill=magenta]{};
+\path(0)edge[arrow](1);\path(1)edge[arrow](2);
+\path (2)edge[arrow](0);\end{tikzpicture}
+\end{document}
