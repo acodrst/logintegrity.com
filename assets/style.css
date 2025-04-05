@@ -133,6 +133,9 @@ html {
   color: black;
   background-color: white;
 }
+#loading{
+  display:none;
+}
 #content {
   padding:5px;
   grid-row: 2;

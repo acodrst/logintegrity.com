@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <style>#loading{margin-top:30vmin;margin-left:35vmin;}</style>
   <meta name="description"
     content="Stream updates of material and data flow">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>𓈗</title>
 </head>
 <body>
+  <svg id="loading" width="90" height="50"><rect width="90" height="50" fill="none" /><text y="20">⏳<animateMotion path="M 0 0 H 60 Z" dur="3s" repeatCount=9 /></text></svg>
   <script src="https://cdn.jsdelivr.net/npm/fzstd@0.1.1/umd/index.js"
     integrity="sha512-9xkDKNSKtCn/6zLYEVT1Muu1KuZsFVFeoYggLPShyi1FSHSiLG2tTQ3Qt8k8JC7Wiu9jCprdZeHgUQo5fPq3ng=="
     crossorigin="anonymous"></script>
@@ -15,11 +17,11 @@
     integrity="sha512-8l6PLZDUdQBuIjsM0vEKUCup9KP+EsB6NlvUtFrDneI1JoIvIJGmxIoiq0qnA31BeKdAwYcTk0TQg71AX9HgRA=="
     crossorigin="anonymous"></script>
   <script>
-    const t = "20250405T182629084Z",
-      a = "3e77fdc7",
-      g = "1033592",
-      tl = "6185194";
-    fetch("20250405T182629084Z-3e77fdc7.png").then((q) => {
+    const t = "20250405T225929085Z",
+      a = "6d02d411",
+      g = "1051311",
+      tl = "6186585";
+    fetch("20250405T225929085Z-6d02d411.png").then((q) => {
       q.arrayBuffer().then((a) => {
         let l = fflate.unzlibSync(new Uint8Array(a.slice(41, -16))),
           f = 0,
@@ -37,7 +39,7 @@
             p++;
           }
         } while (f < l.length);
-        let z = fzstd.decompress(u.slice(7 * 1024, 7 * 1024 + 1033592)),
+        let z = fzstd.decompress(u.slice(7 * 1024, 7 * 1024 + 1051311)),
           s = document.createElement("script");
         s.appendChild(document.createTextNode(new TextDecoder().decode(z)));
         document.body.appendChild(s);

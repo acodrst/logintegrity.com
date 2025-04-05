@@ -5301,7 +5301,6 @@ site.page = Deno.readTextFileSync("assets/page.html");
 let chompy=Deno.readTextFileSync("assets/log_head.html").match(
   /<header id="title-block-header">.+?<h1 class="title">/s,
 );
-console.log(chompy.input.slice(chompy.index+32,6000));
 site.html = chompy.input.slice(chompy.index+32,-22);
 site.css = Deno.readTextFileSync("assets/style.css");
 const st = JSON.stringify(site);
