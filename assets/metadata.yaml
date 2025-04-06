@@ -72,7 +72,6 @@ header-includes:
   ```
 author: Scott H., System Analyst
 title: Streaming  a Logical Map
-abstract-title: Overview 
 keywords: [knowledge graphs, system design, material flow, data flow, supply chain,human cognition]
 toc: false 
 linestretch: 1 
@@ -86,7 +85,6 @@ monofont: LiberationMono-Regular
 monofontoptions: Scale=0.64
 codeBlockCaptions: true
 linkcolor: blue
-abstract: \noindent \normalsize Streaming features allow people to collaborate on a logical map.  This paper describes several methods. \vspace{-199pt} \color{red} \small <p style="color:red;"><b> This document is incomplete. I will work on it over time and remove this notice when finished.\vspace{180pt} \thispagestyle{empty} </b> 
 bibliography: assets/My Library.bib
 geometry:
 - top=.5in

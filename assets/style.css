@@ -145,7 +145,6 @@ html {
 #pdf {
   display: flex;
   justify-content: center;
-  max-width: 1016px;
   margin-left: auto ;
   margin-right: auto ;
 }

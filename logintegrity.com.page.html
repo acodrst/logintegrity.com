@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <style>#loading{margin-top:30vmin;margin-left:35vmin;}</style>
+  <style>#loading{margin-top:30vmin;margin-left:50vmin;}</style>
   <meta name="description"
     content="Stream updates of material and data flow">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -17,11 +17,11 @@
     integrity="sha512-8l6PLZDUdQBuIjsM0vEKUCup9KP+EsB6NlvUtFrDneI1JoIvIJGmxIoiq0qnA31BeKdAwYcTk0TQg71AX9HgRA=="
     crossorigin="anonymous"></script>
   <script>
-    const t = "20250405T225929085Z",
-      a = "6d02d411",
-      g = "1051311",
-      tl = "6186585";
-    fetch("20250405T225929085Z-6d02d411.png").then((q) => {
+    const t = "20250406T154540915Z",
+      a = "44a06bff",
+      g = "209032",
+      tl = "1004570";
+    fetch("20250406T154540915Z-44a06bff.png").then((q) => {
       q.arrayBuffer().then((a) => {
         let l = fflate.unzlibSync(new Uint8Array(a.slice(41, -16))),
           f = 0,
@@ -39,7 +39,7 @@
             p++;
           }
         } while (f < l.length);
-        let z = fzstd.decompress(u.slice(7 * 1024, 7 * 1024 + 1051311)),
+        let z = fzstd.decompress(u.slice(7 * 1024, 7 * 1024 + 209032)),
           s = document.createElement("script");
         s.appendChild(document.createTextNode(new TextDecoder().decode(z)));
         document.body.appendChild(s);
