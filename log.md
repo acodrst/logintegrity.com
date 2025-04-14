@@ -1,6 +1,8 @@
 # More Absurd Than Maps
+\color{red} \small <p style="color:red;"><b>  This document is incomplete. I will work on it over time and remove this notice when finished.   \color{black} \normalsize </b></p>
 
-I describe what data and material flow visualization maps and how to create them in Triple System Analysis (\tsa),Adaptive Analysis(\trs) and How-to Guide (\ada) [@h_triple_2023] [@h_adaptive_2024] [@h_logical_2025]. These methods are not engaging for current culture, at least not on an individual level.  It is odd; you would think that human-focused mapping techniques constrained to data and material flow would be interesting.  My level of effort against the amount of engagement is absurd, yet I am convinced of the utility as we navigate crises.
+
+I share a design for data and material flow visualization maps and show how to create them in Triple System Analysis (\tsa),Adaptive Analysis(\trs) and How-to Guide (\ada) [@h_triple_2023] [@h_adaptive_2024] [@h_logical_2025]. These methods are not engaging for current culture, at least not on an individual level.  It is odd; you would think that human-focused mapping techniques constrained to data and material flow would be interesting.  My level of effort against the amount of engagement is absurd, yet I am convinced of the utility as we navigate crises.
 
 Let's assume at some future time we are more interesting in visualizing flow of materials and data.  It seems likely that the initial engagement will be lone analysts translating brainstorming sessions and action; however, I have designed all of these mapping methods using semantic triples, as these form a pragmatic basis to collaborate on models.  Streams are needed to do this.  True, I'm using minimal syntax, so it is quite possible to just discuss with voice; however, stream tech will allow this to scale to nasty-sized problems.
 

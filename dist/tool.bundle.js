@@ -1,73 +1,3 @@
-/*
-MIT License
-
-Copyright (c) 2020 Egor Nepomnyaschih
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
-/*
-// This constant can also be computed with the following algorithm:
-const base64abc = [],
-    A = "A".charCodeAt(0),
-    a = "a".charCodeAt(0),
-    n = "0".charCodeAt(0);
-for (let i = 0; i < 26; ++i) {
-    base64abc.push(String.fromCharCode(A + i));
-}
-for (let i = 0; i < 26; ++i) {
-    base64abc.push(String.fromCharCode(a + i));
-}
-for (let i = 0; i < 10; ++i) {
-    base64abc.push(String.fromCharCode(n + i));
-}
-base64abc.push("+");
-base64abc.push("/");
-*/
-const base64abc = [
-    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-    "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
-    "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
-    "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
-    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "/"
-];
-function bytesToBase64(bytes) {
-    let result = '', i, l = bytes.length;
-    for (i = 2; i < l; i += 3) {
-        result += base64abc[bytes[i - 2] >> 2];
-        result += base64abc[((bytes[i - 2] & 0x03) << 4) | (bytes[i - 1] >> 4)];
-        result += base64abc[((bytes[i - 1] & 0x0F) << 2) | (bytes[i] >> 6)];
-        result += base64abc[bytes[i] & 0x3F];
-    }
-    if (i === l + 1) { // 1 octet yet to write
-        result += base64abc[bytes[i - 2] >> 2];
-        result += base64abc[(bytes[i - 2] & 0x03) << 4];
-        result += "==";
-    }
-    if (i === l) { // 2 octets yet to write
-        result += base64abc[bytes[i - 2] >> 2];
-        result += base64abc[((bytes[i - 2] & 0x03) << 4) | (bytes[i - 1] >> 4)];
-        result += base64abc[(bytes[i - 1] & 0x0F) << 2];
-        result += "=";
-    }
-    return result;
-}
-
 /*! pako 2.1.0 https://github.com/nodeca/pako @license (MIT AND Zlib) */
 // (C) 1995-2013 Jean-loup Gailly and Mark Adler
 // (C) 2014-2017 Vitaly Puzrin and Andrey Tupitsin
@@ -5227,170 +5157,177 @@ function fpng(label,text) {
   return {"im":img,"ln":dat.length}
 }
 
-const emoji = "𓈗";
-const domain = "logintegrity.com";
-const backup = Deno.env.get("CL_LOG_BACKUP");
-const dt = new Date();
-const tss = dt.toISOString().replaceAll(":", "").replaceAll("-", "").replaceAll(
-  ".",
-  "",
-);
-const site = {};
-let p_c = [
-  "--highlight-style=tango",
-  "--pdf-engine=lualatex",
-  "--pdf-engine-opt=-shell-escape",
-  "--embed-resources",
-  "--filter",
-  "pandoc-crossref",
-  "--filter",
-  "src/filt.js",
-  "--citeproc",
-  "-o",
-  "assets/log.pdf",
-  "log.md",
-  "assets/metadata.yaml",
-];
-console.log(`running pandoc ${p_c.join(" ")}`);
-new Deno.Command("pandoc", {
-  args: p_c,
-}).outputSync();
-p_c = [
-  "--highlight-style=tango",
-  "--filter",
-  "pandoc-crossref",
-  "--filter",
-  "src/filt.js",
-  "--citeproc",
-  "-s",
-  "-o",
-  "assets/log_head.html",
-  "--table-of-contents",
-  "-t",
-  "html5",
-  "log.md",
-  "assets/metadata.yaml",
-];
-console.log(`running pandoc ${p_c.join(" ")}`);
-new Deno.Command("pandoc", {
-  args: p_c,
-}).outputSync();
-//p_c = [
-//  "--highlight-style=tango",
-//  "--filter",
-//  "pandoc-crossref",
-//  "--filter",
-//  "src/filt.js",
-//  "--citeproc",
-//  "-o",
-//  "assets/log.html",
-//  "--table-of-contents",
-//  "-t",
-//  "html5",
-//  "log.md",
-//  "assets/metadata.yaml",
-//];
-//console.log(`running pandoc ${p_c.join(" ")}`);
-//new Deno.Command("pandoc", {
-//  args: p_c,
-//}).outputSync();
+/*
+MIT License
 
-site.pdf = Array.from(Deno.readFileSync("assets/log.pdf"));
-site.viewer = Deno.readTextFileSync("assets/pdf_page.html");
-site.page = Deno.readTextFileSync("assets/page.html");
-let chompy=Deno.readTextFileSync("assets/log_head.html").match(
-  /<header id="title-block-header">.+?<h1 class="title">/s,
-);
-site.html = chompy.input.slice(chompy.index+32,-22);
-site.css = Deno.readTextFileSync("assets/style.css");
-const st = JSON.stringify(site);
-Deno.writeTextFileSync("site.txt", `let site=${st}\n`);
-const text = Deno.readTextFileSync("site.txt") +
-  Deno.readTextFileSync("dist/app.bundle.js");
-function arr_to_hex(u8arr) {
-  return `${
-    Array.from(u8arr, (i) => i.toString(16).padStart(2, "0")).join("")
-  }`;
+Copyright (c) 2020 Egor Nepomnyaschih
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+/*
+// This constant can also be computed with the following algorithm:
+const base64abc = [],
+    A = "A".charCodeAt(0),
+    a = "a".charCodeAt(0),
+    n = "0".charCodeAt(0);
+for (let i = 0; i < 26; ++i) {
+    base64abc.push(String.fromCharCode(A + i));
 }
-const last_hash = Deno.readTextFileSync("data_sha512.txt");
-const cur_hash = arr_to_hex(
-  new Uint8Array(
-    await crypto.subtle.digest("SHA-512", new TextEncoder().encode(text)),
-  ),
-);
-
-if (last_hash.trim() != cur_hash.trim()) {
-  Deno.writeTextFileSync("data_sha512.txt", cur_hash);
-  const fp_obj = fpng(` Verify sig at floppypng.com - ${tss}`, text);
-  const a32h = arr_to_hex(fp_obj.im.slice(-20, -16));
-  console.log(`Generated FloppyPNG Size=${fp_obj.ln}`);
-
-  const priv = Deno.readTextFileSync(Deno.env.get("CL_PRIV")).replace(
-    /.*KEY-----(.+?)-----END.*/smg,
-    "$1",
-  );
-  const b_der_str = globalThis.atob(priv);
-  const b_der = Uint8Array.from([...b_der_str].map((c) =>
-    c.charCodeAt()
-  )).buffer;
-  const prv = await globalThis.crypto.subtle.importKey(
-    "pkcs8",
-    b_der,
-    {
-      name: "RSA-PSS",
-      hash: "SHA-256",
-    },
-    true,
-    ["sign"],
-  );
-  const sig = await crypto.subtle.sign(
-    {
-      name: "RSA-PSS",
-      hash: "SHA-256",
-      saltLength: 32,
-    },
-    prv,
-    fp_obj.im,
-  );
-  const u8sig = new Uint8Array(sig);
-  const pages = ["html", "local.html"];
-  Deno.writeFileSync(`${tss}-${a32h}.png`, fp_obj.im);
-  Deno.writeTextFileSync(`${tss}-${a32h}.txt`, bytesToBase64(u8sig));
-  Deno.writeFileSync(`${backup}${tss}-${a32h}.png`, fp_obj.im);
-  for await (const i of Deno.readDir("./")) {
-    if (
-      i.name != `${tss}-${a32h}.png` &&
-      i.name.match(/^\d{8}T\d{9}Z\-\w{8}.png$/)
-    ) {
-      console.log(`removing ${i.name}`);
-      Deno.remove(i.name);
+for (let i = 0; i < 26; ++i) {
+    base64abc.push(String.fromCharCode(a + i));
+}
+for (let i = 0; i < 10; ++i) {
+    base64abc.push(String.fromCharCode(n + i));
+}
+base64abc.push("+");
+base64abc.push("/");
+*/
+const base64abc = [
+    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+    "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+    "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+    "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
+    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "/"
+];
+function bytesToBase64(bytes) {
+    let result = '', i, l = bytes.length;
+    for (i = 2; i < l; i += 3) {
+        result += base64abc[bytes[i - 2] >> 2];
+        result += base64abc[((bytes[i - 2] & 0x03) << 4) | (bytes[i - 1] >> 4)];
+        result += base64abc[((bytes[i - 1] & 0x0F) << 2) | (bytes[i] >> 6)];
+        result += base64abc[bytes[i] & 0x3F];
     }
-    if (
-      i.name != `${tss}-${a32h}.txt` &&
-      i.name.match(/^\d{8}T\d{9}Z\-\w{8}.txt$/)
-    ) {
-      console.log(`removing ${i.name}`);
-      Deno.remove(i.name);
+    if (i === l + 1) { // 1 octet yet to write
+        result += base64abc[bytes[i - 2] >> 2];
+        result += base64abc[(bytes[i - 2] & 0x03) << 4];
+        result += "==";
     }
+    if (i === l) { // 2 octets yet to write
+        result += base64abc[bytes[i - 2] >> 2];
+        result += base64abc[((bytes[i - 2] & 0x03) << 4) | (bytes[i - 1] >> 4)];
+        result += base64abc[(bytes[i - 1] & 0x0F) << 2];
+        result += "=";
+    }
+    return result;
+}
+
+const dt = new Date();
+const tss = dt.toISOString().replaceAll(":", "").replaceAll("-","").replaceAll(".","");
+async function create(site, domain, backup, emoji) {
+  const st = JSON.stringify(site);
+  Deno.writeTextFileSync("site.txt", `let site=${st}\n`);
+  const text = Deno.readTextFileSync("site.txt") +
+    Deno.readTextFileSync("dist/app.bundle.js");
+  function arr_to_hex(u8arr) {
+    return `${Array.from(u8arr, (i) => i.toString(16).padStart(2, "0")).join("")
+      }`;
   }
-  for (const i of pages) {
+  const last_hash = Deno.readTextFileSync("data_sha512.txt");
+  const cur_hash = arr_to_hex(
+    new Uint8Array(
+      await crypto.subtle.digest("SHA-512", new TextEncoder().encode(text)),
+    ),
+  );
+  if (last_hash.trim() != cur_hash.trim()) {
+    Deno.writeTextFileSync("data_sha512.txt", cur_hash);
+    const fp_obj = fpng(` Verify sig at floppypng.com - ${tss}`, text);
+    const a32h = arr_to_hex(fp_obj.im.slice(-20, -16));
+    console.log(`Generated FloppyPNG Size=${fp_obj.ln}`);
+
+    const priv = Deno.readTextFileSync(Deno.env.get("CL_PRIV")).replace(
+      /.*KEY-----(.+?)-----END.*/smg,
+      "$1",
+    );
+    const b_der_str = globalThis.atob(priv);
+    const b_der = Uint8Array.from([...b_der_str].map((c) =>
+      c.charCodeAt()
+    )).buffer;
+    const prv = await globalThis.crypto.subtle.importKey(
+      "pkcs8",
+      b_der,
+      {
+        name: "RSA-PSS",
+        hash: "SHA-256",
+      },
+      true,
+      ["sign"],
+    );
+    const sig = await crypto.subtle.sign(
+      {
+        name: "RSA-PSS",
+        hash: "SHA-256",
+        saltLength: 32,
+      },
+      prv,
+      fp_obj.im,
+    );
+    const u8sig = new Uint8Array(sig);
+    Deno.writeFileSync(`${tss}-${a32h}.png`, fp_obj.im);
+    Deno.writeTextFileSync(`${tss}-${a32h}.txt`, bytesToBase64(u8sig));
+    Deno.writeFileSync(`${backup}${tss}-${a32h}.png`, fp_obj.im);
+    for await (const i of Deno.readDir("./")) {
+      if (
+        i.name != `${tss}-${a32h}.js` &&
+        i.name.match(/^\d{8}T\d{9}Z\-\w{8}.js$/)
+      ) {
+        console.log(`removing ${i.name}`);
+        Deno.remove(i.name);
+      }
+      if (
+        i.name != `${tss}-${a32h}.png` &&
+        i.name.match(/^\d{8}T\d{9}Z\-\w{8}.png$/)
+      ) {
+        console.log(`removing ${i.name}`);
+        Deno.remove(i.name);
+      }
+      if (
+        i.name != `${tss}-${a32h}.txt` &&
+        i.name.match(/^\d{8}T\d{9}Z\-\w{8}.txt$/)
+      ) {
+        console.log(`removing ${i.name}`);
+        Deno.remove(i.name);
+      }
+    }
     console.log(`${tss}-${a32h}`);
     Deno.writeTextFileSync(
-      `${domain}.page.${i}`,
-      Deno.readTextFileSync(`assets/pageops.${i}`)
+      `${tss}-${a32h}.js`,
+      Deno.readTextFileSync(`assets/bootloader.template.js`)
         .replaceAll("thisistss", tss)
         .replaceAll("thisisadler", a32h)
         .replaceAll("thisisemoji", emoji)
         .replaceAll("thisistextlength", st.length)
         .replaceAll("thisislength", fp_obj.ln),
     );
+    Deno.writeTextFileSync(
+      `${domain}.page.html`,
+      Deno.readTextFileSync(`assets/pageops.html`)
+        .replaceAll("thisisemoji", emoji)
+        .replaceAll("thisistss", tss)
+        .replaceAll("thisisadler", a32h)
+    );
   }
 }
-function web_deal(req) {
+function web_deal(req, domain) {
   if (req.method == "GET") {
     const u = new URL(req.url);
     const page = u.pathname == "/"
-      ? `${domain}.page.local.html`
+      ? `${domain}.page.html`
       : u.pathname.replace("/", "");
     let npg;
     let response;
@@ -5436,8 +5373,62 @@ const types = {
   "webm": "video/webm",
   "ico": "image/x-icon",
 };
+
+const emoji = "𓈗";
+const domain = "logintegrity.com";
+const backup = Deno.env.get("CL_LOG_BACKUP");
+console.log(create);
+const site = {};
+let p_c = [
+  "--highlight-style=tango",
+  "--pdf-engine=lualatex",
+  "--pdf-engine-opt=-shell-escape",
+  "--embed-resources",
+  "--filter",
+  "pandoc-crossref",
+  "--filter",
+  "src/filt.js",
+  "--citeproc",
+  "-o",
+  "assets/log.pdf",
+  "log.md",
+  "assets/metadata.yaml",
+];
+console.log(`running pandoc ${p_c.join(" ")}`);
+new Deno.Command("pandoc", {
+  args: p_c,
+}).outputSync();
+p_c = [
+  "--highlight-style=tango",
+  "--filter",
+  "pandoc-crossref",
+  "--filter",
+  "src/filt.js",
+  "--citeproc",
+  "-s",
+  "-o",
+  "assets/log_head.html",
+  "--table-of-contents",
+  "-t",
+  "html5",
+  "log.md",
+  "assets/metadata.yaml",
+];
+console.log(`running pandoc ${p_c.join(" ")}`);
+new Deno.Command("pandoc", {
+  args: p_c,
+}).outputSync();
+site.pdf = Array.from(Deno.readFileSync("assets/log.pdf"));
+site.viewer = Deno.readTextFileSync("assets/pdf_page.html");
+site.page = Deno.readTextFileSync("assets/page.html");
+let chompy=Deno.readTextFileSync("assets/log_head.html").match(
+  /<header id="title-block-header">.+?<h1 class="title">/s,
+);
+site.html = chompy.input.slice(chompy.index+32,-22);
+site.css = Deno.readTextFileSync("assets/style.css");
+create(site,domain,backup,emoji);
 Deno.serve({
   port: 3052,
   hostname: "0.0.0.0",
-  handler: (req) => web_deal(req),
+  handler: (req) => web_deal(req,domain),
 });
