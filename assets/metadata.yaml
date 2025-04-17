@@ -85,7 +85,7 @@ monofont: LiberationMono-Regular
 monofontoptions: Scale=0.64
 codeBlockCaptions: true
 linkcolor: blue
-bibliography: assets/My Library.bib
+bibliography: /home/divine/websites/site/log/assets/My Library.bib
 geometry:
 - top=.5in
 - bottom=.5in

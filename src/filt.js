@@ -7,24 +7,24 @@ const date = dt.toISOString().slice(0, 10);
 const icons = { "tsa": {}, "ada": {}, "trs": {} };
 icons.tsa.link = "https://doi.org/10.5281/zenodo.7826793";
 icons.tsa.title = "Triple System Analysis";
-icons.tsa.svg = Deno.readTextFileSync("assets/tsa.svg").trim();
+icons.tsa.svg = Deno.readTextFileSync("/home/divine/websites/site/log/assets/tsa.svg").trim();
 icons.trs.link = "https://doi.org/10.5281/zenodo.13684896";
 icons.trs.title = "Adaptive Analysis";
-icons.trs.svg = Deno.readTextFileSync("assets/trs.svg").trim();
+icons.trs.svg = Deno.readTextFileSync("/home/divine/websites/site/log/assets/trs.svg").trim();
 icons.ada.link = "https://adaptiveanalysis.org";
 icons.ada.title = "A Flow Visualization Practionary";
-icons.ada.svg = Deno.readTextFileSync("assets/ada.svg").trim();
+icons.ada.svg = Deno.readTextFileSync("/home/divine/websites/site/log/assets/ada.svg").trim();
 if (format == "html5") {
   input.meta.author.c.unshift({
     "t": "RawInline",
-    "c": ["html", `${Deno.readTextFileSync("assets/per.svg")}`],
+    "c": ["html", `${Deno.readTextFileSync("/home/divine/websites/site/log/assets/per.svg")}`],
   });
   input.meta.author.c.push({
     "t": "RawInline",
     "c": [
       "html",
       `<a href="https://orcid.org/0009-0001-4480-7776" title="ORCID">${
-        Deno.readTextFileSync("assets/oid.svg")
+        Deno.readTextFileSync("/home/divine/websites/site/log/assets/oid.svg")
       }</a>`,
     ],
   });
@@ -38,7 +38,7 @@ if (format == "latex") {
         "t": "RawInline",
         "c": [
           "tex",
-          "\\raisebox{-130pt}{\\includesvg[scale=.6]{assets/per.svg}}",
+          "\\raisebox{-130pt}{\\includesvg[scale=.6]{/home/divine/websites/site/log/assets/per.svg}}",
         ],
       },
       {
@@ -52,7 +52,7 @@ if (format == "latex") {
         "t": "RawInline",
         "c": [
           "tex",
-          "\\raisebox{-85pt}{Scott H., System Analyst \\hspace{6pt} \\raisebox{-2pt}{\\href{https://orcid.org/0009-0001-4480-7776}{\\includegraphics[width=18pt, height=18pt]{images/oid.eps}}}\\vspace{-.4in}}",
+          "\\raisebox{-85pt}{Scott H., System Analyst \\hspace{6pt} \\raisebox{-2pt}{\\href{https://orcid.org/0009-0001-4480-7776}{\\includegraphics[width=18pt, height=18pt]{/home/divine/websites/site/log/images/oid.eps}}}\\vspace{-.4in}}",
         ],
       },
       {
@@ -68,7 +68,7 @@ if (format == "latex") {
 
 let data = encoder.encode(JSON.stringify(input));
 const uris = {};
-const bib = Deno.readTextFileSync("assets/My Library.bib");
+const bib = Deno.readTextFileSync("/home/divine/websites/site/log/assets/My Library.bib");
 for (
   const b of bib.matchAll(
     /@.+?\{(.+?),.+?title\s*=\s*\{(.+?)\}.+?url\s*=\s*\{(.+?)\}/gsm,
@@ -77,8 +77,8 @@ for (
   uris[b[1]] = { "t": b[2], "u": b[3] };
 }
 const link_image = {};
-link_image.latex = ["tex", "\\includesvg[scale=.06]{assets/link.svg}"];
-link_image.html5 = ["html", Deno.readTextFileSync("assets/link.svg").trim()];
+link_image.latex = ["tex", "\\includesvg[scale=.06]{/home/divine/websites/site/log/assets/link.svg}"];
+link_image.html5 = ["html", Deno.readTextFileSync("/home/divine/websites/site/log/assets/link.svg").trim()];
 for (const b in input.blocks) {
   if (input.blocks[b].t == "Para") {
     let j = 0;
@@ -125,7 +125,7 @@ for (const b in input.blocks) {
     const fig_img = input.blocks[b].c[2][0].c[0].c[2][0].split("images/")[1];
     const s = input.blocks[b].c[2][0].c[0].c[0][2][0][1];
     const a = input.blocks[b].c[2][0].c[0].c[0][2][1][1];
-    const fig_txt = Deno.readTextFileSync(`images/${fig_img}`);
+    const fig_txt = Deno.readTextFileSync(`/home/divine/websites/site/log/images/${fig_img}`);
     const label = input.blocks[b].c[0][0];
     const w = fig_txt.match(/width="\d*\.*?\d*pt"/s)[0].slice(7, -3) * s;
     const h = fig_txt.match(/height="\d*\.*?\d*pt"/s)[0].slice(8, -3) * s;
@@ -140,7 +140,7 @@ for (const b in input.blocks) {
         "c": [
           "tex",
           `\\begin{wrapfigure}[${l}]{${align}}{0px}\\centering
-          \\includesvg[scale=${s}]{images/${fig_img}}\\caption{${caption}}\\label{${label}}\\end{wrapfigure}`,
+          \\includesvg[scale=${s}]{/home/divine/websites/site/log/images/${fig_img}}\\caption{${caption}}\\label{${label}}\\end{wrapfigure}`,
         ],
       };
     }
@@ -148,7 +148,7 @@ for (const b in input.blocks) {
     if (format == "html5") {
       const fig_num = input.blocks[b].c[2][0].c[0].c[1][2].c;
       const caption = input.blocks[b].c[2][0].c[0].c[1][4].c;
-      const t = Deno.readTextFileSync(`images/${fig_img}`);
+      const t = Deno.readTextFileSync(`/home/divine/websites/site/log/images/${fig_img}`);
       input.blocks[b] = {
         "t": "RawBlock",
         "c": [

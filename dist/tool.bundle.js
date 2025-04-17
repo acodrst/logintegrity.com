@@ -5377,7 +5377,6 @@ const types = {
 const emoji = "𓈗";
 const domain = "logintegrity.com";
 const backup = Deno.env.get("CL_LOG_BACKUP");
-console.log(create);
 const site = {};
 let p_c = [
   "--highlight-style=tango",
