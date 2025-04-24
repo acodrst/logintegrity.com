@@ -1,0 +1,6 @@
+{
+    "logintegrity.com": {
+      "title": "Streaming a Logical Map",
+      "description":"Use MQTT to stream a logical map"
+    }
+}

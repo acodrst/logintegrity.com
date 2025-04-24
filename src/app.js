@@ -1,26 +1,19 @@
+import saveAs from "file-saver"
 document.body.insertAdjacentHTML("beforeend", site.page);
 document.getElementById("home").insertAdjacentHTML("beforeend", site.html);
-const iframe = document.createElement("iframe");
-iframe.srcdoc = site.viewer.replace("thisistss", ʬt).replace("thisisadler",ʬa)
-  .replace("thisislength",ʬg).replace("thisistextlength",ʬl);
-iframe.id = "pdf_frame";
-document.getElementById("pdf").appendChild(iframe);
 const style = document.createElement("style");
 style.textContent = site.css;
 document.head.appendChild(style);
 function terms() {
   document.getElementById("terms").style.display = "block";
-  document.getElementById("pdf").style.display = "none";
   document.getElementById("home").style.display = "none";
 }
 function home() {
   document.getElementById("terms").style.display = "none";
-  document.getElementById("pdf").style.display = "none";
   document.getElementById("home").style.display = "block";
 }
 function description() {
   document.getElementById("terms").style.display = "none";
-  document.getElementById("pdf").style.display = "flex";
   document.getElementById("home").style.display = "none";
 }
 refresh();
@@ -31,9 +24,17 @@ function refresh() {
     : hash == "export"
     ? svg_out()
     : hash == "pdf"
-    ? description()
+    ? pdf()
     : home();
 }
 globalThis.addEventListener("hashchange", () => {
   refresh();
 });
+function pdf(){
+    const save_name = prompt("Enter the file name for saving the map in SVG format. This will save to your browser's download folder.","Streaming a Logical Map.pdf")
+    const u8array=new Uint8Array(site.pdf)
+    const blob_content = new Blob([u8array], {
+      type: "application/pdf"
+    })
+    if (!(save_name===null)) saveAs(blob_content, save_name)
+}

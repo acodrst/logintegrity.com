@@ -5227,9 +5227,10 @@ function bytesToBase64(bytes) {
     return result;
 }
 
+const metadata=JSON.parse(Deno.readTextFileSync("assets/metadata.json"));
 const dt = new Date();
 const tss = dt.toISOString().replaceAll(":", "").replaceAll("-","").replaceAll(".","");
-async function create(site, domain, backup, emoji) {
+async function create(site,backup) {
   const st = JSON.stringify(site);
   Deno.writeTextFileSync("site.txt", `let site=${st}\n`);
   const text = Deno.readTextFileSync("site.txt") +
@@ -5310,24 +5311,26 @@ async function create(site, domain, backup, emoji) {
       Deno.readTextFileSync(`assets/bootloader.template.js`)
         .replaceAll("thisistss", tss)
         .replaceAll("thisisadler", a32h)
-        .replaceAll("thisisemoji", emoji)
         .replaceAll("thisistextlength", st.length)
         .replaceAll("thisislength", fp_obj.ln),
     );
+    for (let i in metadata){
     Deno.writeTextFileSync(
-      `${domain}.page.html`,
+      `${i}.page.html`,
       Deno.readTextFileSync(`assets/pageops.html`)
-        .replaceAll("thisisemoji", emoji)
+        .replace("<title></title>",`<title>${metadata[i].title}</title>`)
+        .replace(`<meta name="description" content="">`,`<meta name="description" content="${metadata[i].description}">`)
         .replaceAll("thisistss", tss)
         .replaceAll("thisisadler", a32h)
     );
   }
+  }
 }
-function web_deal(req, domain) {
+function web_deal(req) {
   if (req.method == "GET") {
     const u = new URL(req.url);
     const page = u.pathname == "/"
-      ? `${domain}.page.html`
+      ? `${Object.keys(metadata)[0]}.page.html`
       : u.pathname.replace("/", "");
     let npg;
     let response;
@@ -5374,8 +5377,6 @@ const types = {
   "ico": "image/x-icon",
 };
 
-const emoji = "𓈗";
-const domain = "logintegrity.com";
 const backup = Deno.env.get("CL_LOG_BACKUP");
 const site = {};
 let p_c = [
@@ -5418,16 +5419,15 @@ new Deno.Command("pandoc", {
   args: p_c,
 }).outputSync();
 site.pdf = Array.from(Deno.readFileSync("assets/log.pdf"));
-site.viewer = Deno.readTextFileSync("assets/pdf_page.html");
 site.page = Deno.readTextFileSync("assets/page.html");
 let chompy=Deno.readTextFileSync("assets/log_head.html").match(
   /<header id="title-block-header">.+?<h1 class="title">/s,
 );
 site.html = chompy.input.slice(chompy.index+32,-22);
 site.css = Deno.readTextFileSync("assets/style.css");
-create(site,domain,backup,emoji);
+create(site,backup);
 Deno.serve({
   port: 3052,
   hostname: "0.0.0.0",
-  handler: (req) => web_deal(req,domain),
+  handler: (req) => web_deal(req),
 });
