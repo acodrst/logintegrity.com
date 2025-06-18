@@ -4,16 +4,25 @@ const encoder = new TextEncoder();
 const format = process.argv[2];
 const dt = new Date();
 const date = dt.toISOString().slice(0, 10);
-const icons = { "tsa": {}, "ada": {}, "trs": {} };
+const icons = { "tsa": {}, "ada": {}, "trs": {},"lgi":{},"lmp":{},"sya":{} };
+icons.lgi.link = "https://logintegrity.com/";
+icons.lgi.title = "Streaming a Logical Map";
+icons.lgi.svg = Deno.readTextFileSync("/home/divine/websites/site/ada/assets/lgi.svg").trim();
+icons.lmp.link = "https://logicalmap.org";
+icons.lmp.title = "Logical Map";
+icons.lmp.svg = Deno.readTextFileSync("/home/divine/websites/site/ada/assets/lmp.svg").trim();
+icons.sya.link = "https://systemsa.net";
+icons.sya.title = "Scott H. related sites and knowledge";
+icons.sya.svg = Deno.readTextFileSync("/home/divine/websites/site/ada/assets/sya.svg").trim();
 icons.tsa.link = "https://doi.org/10.5281/zenodo.7826793";
 icons.tsa.title = "Triple System Analysis";
-icons.tsa.svg = Deno.readTextFileSync("/home/divine/websites/site/log/assets/tsa.svg").trim();
+icons.tsa.svg = Deno.readTextFileSync("/home/divine/websites/site/ada/assets/tsa.svg").trim();
 icons.trs.link = "https://doi.org/10.5281/zenodo.13684896";
 icons.trs.title = "Adaptive Analysis";
-icons.trs.svg = Deno.readTextFileSync("/home/divine/websites/site/log/assets/trs.svg").trim();
+icons.trs.svg = Deno.readTextFileSync("/home/divine/websites/site/ada/assets/trs.svg").trim();
 icons.ada.link = "https://adaptiveanalysis.org";
-icons.ada.title = "A Flow Visualization Practionary";
-icons.ada.svg = Deno.readTextFileSync("/home/divine/websites/site/log/assets/ada.svg").trim();
+icons.ada.title = "Logical Map How-to Guide";
+icons.ada.svg = Deno.readTextFileSync("/home/divine/websites/site/ada/assets/ada.svg").trim();
 if (format == "html5") {
   input.meta.author.c.unshift({
     "t": "RawInline",
@@ -109,7 +118,7 @@ for (const b in input.blocks) {
       }
       if (format == "html5" && input.blocks[b].c[j]?.t == "RawInline") {
         const trm = input.blocks[b].c[j].c[1].trim().slice(1);
-        if (["trs", "tsa", "ada"].includes(trm)) {
+        if (["trs", "tsa", "ada","lmp","lgi","sya"].includes(trm)) {
           input.blocks[b].c[j].c = [
             "html",
             `<a href="${icons[trm].link}" title="${icons[trm].title}">${
@@ -140,7 +149,8 @@ for (const b in input.blocks) {
         "c": [
           "tex",
           `\\begin{wrapfigure}[${l}]{${align}}{0px}\\centering
-          \\includesvg[scale=${s}]{/home/divine/websites/site/log/images/${fig_img}}\\caption{${caption}}\\label{${label}}\\end{wrapfigure}`,
+          \\includesvg[scale=${s}]{/home/divine/websites/site/log/images/${fig_img}}
+          \\caption{${caption}}\\label{${label}}\\end{wrapfigure}`,
         ],
       };
     }

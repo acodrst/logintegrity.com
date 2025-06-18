@@ -1,5 +1,8 @@
 const backup = Deno.env.get("CL_LOG_BACKUP");
 import { create, web_deal } from "fpng-sign-serve";
+Deno.copyFileSync("/home/divine/websites/site/ada/assets/std_template.tex","./assets/std_template.tex")
+Deno.copyFileSync("/home/divine/websites/site/ada/assets/std_graph.tex","./assets/std_graph.tex")
+Deno.copyFileSync("/home/divine/websites/site/ada/assets/inline_icons.tex","./assets/inline_icons.tex")
 const site = {};
 let p_c = [
   "--highlight-style=tango",
